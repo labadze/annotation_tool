@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Annotation Tool</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="../static/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <style>
+        html, body, h1, h2, h3, h4, h5 {
+            font-family: "Raleway", sans-serif
+        }
+
+        #annotation0 {
+            width: 10%;
+            min-height: 50px;
+            margin: 1rem 0 0 1rem;
+            background-color: rgba(34, 201, 238, 0.9);
+            color: rgba(186, 214, 215, 0.99);
+            border-radius: 0.75em;
+            padding: 1%;
+            touch-action: none;
+            user-select: none;
+            font-size: 20px;
+            font-family: sans-serif;
+            overflow: hidden;
+            /* This makes things *much* easier */
+            box-sizing: border-box;
+        }
+
+        #annotation1 {
+            width: 10%;
+            min-height: 50px;
+            margin: 1rem 0 0 1rem;
+            background-color: rgba(238, 204, 34, 0.84);
+            color: white;
+            border-radius: 0.75em;
+            padding: 1%;
+            touch-action: none;
+            user-select: none;
+            font-size: 20px;
+            font-family: sans-serif;
+            overflow: hidden;
+            /* This makes things *much* easier */
+            box-sizing: border-box;
+        }
+
+        #annotation2 {
+            width: 10%;
+            min-height: 50px;
+            margin: 1rem 0 0 1rem;
+            background-color: rgba(34, 238, 68, 0.91);
+            color: white;
+            border-radius: 0.75em;
+            padding: 1%;
+            touch-action: none;
+            user-select: none;
+            font-size: 20px;
+            font-family: sans-serif;
+            overflow: hidden;
+            /* This makes things *much* easier */
+            box-sizing: border-box;
+        }
+
+        #img {
+            margin-left: 16%;
+            position: absolute;
+            top: 25%;
+            z-index: -999;
+        }
+    </style>
+</head>
+<body class="w3-light-grey">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+    <span class="w3-bar-item w3-right">Annotation Tool Logo</span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container w3-row">
+        <div class="w3-col s4">
+            <p>Annotation Tool</p>
+        </div>
+    </div>
+    <hr>
+    <div class="w3-container">
+        <h5>Image files</h5>
+    </div>
+    <div class="w3-bar-block" id="menu_list"></div>
+</nav>
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+        <h5><b><i class="fa fa-dashboard"></i> Workspace</b></h5>
+        <button id="save_changes" class="w3-btn w3-blue-gray w3-wide w3-right">SAVE</button>
+    </header>
+    <div class="w3-row-padding w3-margin-bottom" style="height: 100vh;">
+        <div id="success_modal" class="w3-modal">
+            <div class="w3-modal-content w3-animate-top w3-card-4">
+                <header class="w3-container w3-white">
+        <span onclick="document.getElementById('success_modal').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+                    <h4 class="w3-center">Operation success</h4>
+                </header>
+                <div class="w3-container">
+                    <p>Operation completed successfully...</p>
+                </div>
+                <footer class="w3-container w3-white">
+                    <p></p>
+                </footer>
+            </div>
+        </div>
+        <div class="annotation" style="display: block;" id="annotation0"></div>
+        <div class="annotation" style="display: block;" id="annotation1"></div>
+        <div class="annotation" style="display: block;" id="annotation2"></div>
+        <img class="w3-hide" id="img" alt="" src="">
+    </div>
+    <!-- Footer -->
+    <footer class="w3-container w3-padding-16 w3-light-grey">
+        <p>Powered</p>
+    </footer>
+    <!-- End page content -->
+</div>
+<script>
+    // API URL
+    const SERVER_URL = 'http://127.0.0.1:5000';
+    // Entry ID
+    let itemId = '';
+    // File name from list
+    let selectedFileName = '';
+    // Annotation array
+    /*
+    * Keeps annotation coords, and style
+    * */
+    let annotationsArray = [];
+
+    //
+    let menuIds = [];
+
+    window.addEventListener('load', (event) => {
+        // document.getElementById('save_changes').disabled = true;
+        fetch(`${SERVER_URL}/image_list`).then((response) => response.json()).then((data) => {
+            // Run for cycle to iterate response item
+            /*
+            * Returning type
+            *  { "success" boolean, "data": array }
+            * */
+            for (const menuItem of data.data) {
+                // Creating menu element
+                let menuPoint = document.createElement('a');
+                // Set classname
+                menuPoint.className = 'w3-bar-item w3-button w3-padding';
+                // Set file name as html element id
+                menuPoint.id = menuItem.file_name;
+                // Set file name as meni visible text
+                const menuText = document.createTextNode(menuItem.file_name);
+                if (menuItem.data_available) {
+                    const spanEl = document.createElement('span');
+                    spanEl.className = 'w3-right';
+                    const dotText = document.createTextNode('•');
+                    spanEl.appendChild(dotText);
+                    menuPoint.appendChild(spanEl);
+                }
+                // Append to html element
+                menuPoint.appendChild(menuText);
+                menuIds.push(menuItem.file_name);
+                // Handle click on item...
+                menuPoint.addEventListener('click', function handleClick(event) {
+                    // Call function to make image visible to pass image path
+                    displayImage(menuItem.file_path);
+                    // Define selected file name
+                    selectedFileName = menuItem.file_name;
+                    // Get file name if licked
+                    getFileInfo(menuItem.file_name);
+                    // add class as active on click
+                    document.getElementById(menuItem.file_name).className = 'w3-bar-item w3-button w3-padding w3-blue';
+                    menuIds.forEach((m) => {
+                        if (m !== menuItem.file_name) {
+                            document.getElementById(m).classList.remove('w3-blue');
+                        }
+                    });
+                });
+                // Append item to list
+                menuBlock.appendChild(menuPoint)
+            }
+        });
+    });
+
+    /*
+    * Check on click
+    * */
+    const getFileInfo = (fileName) => {
+        fetch(`${SERVER_URL}/file?encoded_file_name=${window.btoa(`${fileName}`)}`).then((response) => response.json()).then((data) => {
+            if (data.success) {
+                const fetchedData = data.data;
+                itemId = fetchedData.id;
+                if (fetchedData.annotations.length > 0) {
+                    for (const annotation of fetchedData.annotations) {
+                        let annotationElement = document.getElementById(annotation.annotation_id);
+                        annotationElement.textContent = 'Annotation text';
+                        annotationElement.style.fontSize = '10px';
+                        annotationElement.style.color = 'rgba(3,149,153,0.99)';
+                        annotationElement.style.borderStyle = 'double';
+                        annotationElement.style.backgroundColor = 'transparent';
+                        annotationElement.style.borderColor = 'rgba(55,153,158,0.99)';
+                        annotationElement.style.borderBlockWidth = '2px';
+
+                        let x = (parseFloat(annotationElement.getAttribute('data-x')) || 0) + annotation.dx
+                        let y = (parseFloat(annotationElement.getAttribute('data-y')) || 0) + annotation.dy
+
+                        annotationElement.style.transform = 'translate(' + annotation.x + 'px, ' + annotation.y + 'px)'
+
+                        if ('with' in annotation) {
+                            annotationElement.style.width = `${Math.floor(annotation.width).toString()}px`;
+                        }
+
+                        if ('height' in annotation) {
+                            annotationElement.style.height = `${Math.floor(annotation.height).toString()}px`;
+                        }
+
+                        // update the position attributes
+                        annotationElement.setAttribute('data-x', annotation.x)
+                        annotationElement.setAttribute('data-y', annotation.y)
+                    }
+                }
+                annotationsArray = fetchedData.annotations;
+            } else {
+                let ann0 = document.getElementById('annotation0');
+                ann0.style.width = '10%';
+                ann0.style.minHeight = '50px';
+                ann0.style.height = '50px';
+                ann0.style.margin = '1rem 0 0 1rem';
+                ann0.style.backgroundColor = 'rgba(34, 201, 238, 0.9)';
+                ann0.style.color = 'rgba(34, 201, 238, 0.9)';
+                ann0.style.borderRadius = '0.75em';
+                ann0.style.padding = '1%';
+                ann0.style.touchAction = 'none';
+                ann0.style.userSelect = 'none';
+                ann0.style.fontSize = '13px';
+                ann0.style.fontFamily = 'sans-serif';
+                ann0.style.overflow = 'hidden';
+                ann0.style.boxSizing = 'border-box';
+                ann0.textContent = '';
+                ann0.setAttribute('data-x', '0');
+                ann0.setAttribute('data-y', '0');
+                ann0.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
+
+                let ann1 = document.getElementById('annotation1');
+                ann1.style.width = '10%';
+                ann1.style.minHeight = '50px';
+                ann1.style.height = '50px';
+                ann1.style.margin = '1rem 0 0 1rem';
+                ann1.style.backgroundColor = 'rgba(238, 204, 34, 0.84)';
+                ann1.style.color = 'rgba(238, 204, 34, 0.84)';
+                ann1.style.borderRadius = '0.75em';
+                ann1.style.padding = '1%';
+                ann1.style.touchAction = 'none';
+                ann1.style.userSelect = 'none';
+                ann1.style.fontSize = '13px';
+                ann1.style.fontFamily = 'sans-serif';
+                ann1.style.overflow = 'hidden';
+                ann1.style.boxSizing = 'border-box';
+                ann1.textContent = '';
+                ann1.setAttribute('data-x', '0');
+                ann1.setAttribute('data-y', '0');
+                ann1.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
+
+                let ann2 = document.getElementById('annotation2');
+                ann2.style.width = '10%';
+                ann2.style.minHeight = '50px';
+                ann2.style.height = '50px';
+                ann2.style.margin = '1rem 0 0 1rem';
+                ann2.style.backgroundColor = 'rgba(34, 238, 68, 0.91)';
+                ann2.style.color = 'rgba(34, 238, 68, 0.91)';
+                ann2.style.borderRadius = '0.75em';
+                ann2.style.padding = '1%';
+                ann2.style.touchAction = 'none';
+                ann2.style.userSelect = 'none';
+                ann2.style.fontSize = '13px';
+                ann2.style.fontFamily = 'sans-serif';
+                ann2.style.overflow = 'hidden';
+                ann2.style.boxSizing = 'border-box';
+                ann2.textContent = '';
+                ann2.setAttribute('data-x', '0');
+                ann2.setAttribute('data-y', '0');
+                ann2.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
+
+                annotationsArray = [];
+                itemId = '';
+            }
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+
+    // Set source
+    const displayImage = (imagePath) => {
+        let img = document.getElementById('img')
+        img.className = 'w3-show';
+        img.src = imagePath;
+    };
+
+    // Remove annotation from array
+
+    const removeAnnotationFromArray = (annotationId) => {
+        let arrayWithoutRemoveCandidate = [];
+        for (const item of annotationsArray) {
+            if (item.annotation_id !== annotationId) {
+                arrayWithoutRemoveCandidate.push(item);
+            }
+        }
+        annotationsArray = arrayWithoutRemoveCandidate;
+    };
+
+    // Set annotation to init point
+    const setToInit = (elementId) => {
+        let ann = document.getElementById(elementId);
+        ann.style.width = '10%';
+        ann.style.minHeight = '50px';
+        ann.style.height = '50px';
+        ann.style.margin = '1rem 0 0 1rem';
+        if (elementId === 'annotation0') {
+            ann.style.backgroundColor = 'rgba(34, 201, 238, 0.9)';
+            ann.style.color = 'rgba(34, 201, 238, 0.9)';
+        }
+
+        if (elementId === 'annotation1') {
+            ann.style.backgroundColor = 'rgba(238, 204, 34, 0.84)';
+            ann.style.color = 'rgba(238, 204, 34, 0.84)';
+        }
+        if (elementId === 'annotation2') {
+            ann.style.backgroundColor = 'rgba(34, 238, 68, 0.91)';
+            ann.style.color = 'rgba(34, 238, 68, 0.91)';
+        }
+        ann.style.borderRadius = '0.75em';
+        ann.style.padding = '1%';
+        ann.style.touchAction = 'none';
+        ann.style.userSelect = 'none';
+        ann.style.fontSize = '13px';
+        ann.style.fontFamily = 'sans-serif';
+        ann.style.overflow = 'hidden';
+        ann.style.boxSizing = 'border-box';
+        ann.textContent = '';
+        ann.setAttribute('data-x', '0');
+        ann.setAttribute('data-y', '0');
+        ann.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
+    };
+
+    const firstAnnotationElement = document.getElementById('annotation0');
+
+    firstAnnotationElement.addEventListener('mouseover', (event) => {
+        if (firstAnnotationElement.childNodes.length === 1) {
+            // It has at least one
+            let closeButton = document.createElement('span');
+            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
+            closeButton.id = 'close_annotation_0';
+            closeButton.style.display = 'block';
+            closeButton.innerText = 'X';
+            firstAnnotationElement.appendChild(closeButton);
+            closeButton.addEventListener('click', (event) => {
+                // firstAnnotationElement.style.display = 'none';
+                firstAnnotationElement.textContent = '';
+                setToInit('annotation0');
+                removeAnnotationFromArray('annotation0');
+            });
+        }
+    });
+
+    firstAnnotationElement.addEventListener('mouseout', (event) => {
+        if (firstAnnotationElement.childNodes.length > 1) {
+            setTimeout(() => {
+                if (document.getElementById('close_annotation_0') !== null) {
+                    document.getElementById('close_annotation_0').remove();
+                }
+            }, 1500);
+        }
+    });
+
+    const secondAnnotationElement = document.getElementById('annotation1');
+
+    secondAnnotationElement.addEventListener('mouseover', (event) => {
+        if (secondAnnotationElement.childNodes.length === 1) {
+            // It has at least one
+            let closeButton = document.createElement('span');
+            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
+            closeButton.id = 'close_annotation_1';
+            closeButton.style.display = 'block';
+            closeButton.innerText = 'X';
+            secondAnnotationElement.appendChild(closeButton);
+            closeButton.addEventListener('click', (event) => {
+                // secondAnnotationElement.style.display = 'none';
+                secondAnnotationElement.textContent = '';
+                setToInit('annotation1');
+                removeAnnotationFromArray('annotation1');
+            });
+        }
+    });
+
+    secondAnnotationElement.addEventListener('mouseout', (event) => {
+        if (secondAnnotationElement.childNodes.length > 1) {
+            setTimeout(() => {
+                if (document.getElementById('close_annotation_1') !== null) {
+                    document.getElementById('close_annotation_1').remove();
+                }
+            }, 1500);
+        }
+    });
+
+
+    const thirdAnnotationElement = document.getElementById('annotation2');
+
+    thirdAnnotationElement.addEventListener('mouseover', (event) => {
+        if (thirdAnnotationElement.childNodes.length === 1) {
+            // It has at least one
+            let closeButton = document.createElement('span');
+            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
+            closeButton.id = 'close_annotation_2';
+            closeButton.style.display = 'block';
+            closeButton.innerText = 'X';
+            thirdAnnotationElement.appendChild(closeButton);
+            closeButton.addEventListener('click', (event) => {
+                // thirdAnnotationElement.style.display = 'none';
+                thirdAnnotationElement.textContent = '';
+                setToInit('annotation2');
+                removeAnnotationFromArray('annotation2');
+            });
+        }
+    });
+
+    thirdAnnotationElement.addEventListener('mouseout', (event) => {
+        if (thirdAnnotationElement.childNodes.length > 1) {
+            setTimeout(() => {
+                if (document.getElementById('close_annotation_2') !== null) {
+                    document.getElementById('close_annotation_2').remove();
+                }
+            }, 1500);
+        }
+    });
+
+    let menuBlock = document.getElementById('menu_list');
+
+    const pointAnnotationsToArray = (event, x, y, dx, dy, w, h) => {
+        const annotationObject = {
+            annotation_id: event.target.id,
+            styles: `translate(' + ${x} + 'px,' + ${y} + 'px)`,
+            x: x,
+            y: y,
+            dx: dx,
+            dy: dy,
+            width: w,
+            height: h
+        };
+        if (annotationsArray.filter(a => a.annotation_id === event.target.id).length === 0) {
+            annotationsArray.push(annotationObject);
+        } else {
+            let updatedArray = [];
+            updatedArray.push(annotationObject);
+            for (const k of annotationsArray) {
+                if (k.annotation_id !== event.target.id) {
+                    updatedArray.push(k);
+                }
+            }
+            annotationsArray = updatedArray;
+        }
+        // if (annotationsArray.length > 0) {
+        //     document.getElementById('save_changes').disabled = false;
+        // } else {
+        //     document.getElementById('save_changes').disabled = true;
+        // }
+    };
+
+    // target elements with the "draggable" class
+    interact('.annotation').draggable({
+        // enable inertial throwing
+        inertia: true,
+        // keep the element within the area of it's parent
+        modifiers: [
+            interact.modifiers.restrictRect({
+                restriction: 'parent',
+                endOnly: true
+            })
+        ],
+        // enable autoScroll
+        autoScroll: true,
+        listeners: {
+            // start(event) {
+            //     console.log(event.type, event.target)
+            // },
+            // call this function on every drag-move event
+            move: dragMoveListener,
+            // call this function on every dragend event
+            end(event) {
+                let annotationElement = document.getElementById(event.target.id);
+                annotationElement.textContent = 'Annotation text';
+                annotationElement.style.fontSize = '10px';
+                annotationElement.style.color = 'rgba(3,149,153,0.99)';
+                annotationElement.style.borderStyle = 'double';
+                annotationElement.style.backgroundColor = 'transparent';
+                annotationElement.style.borderColor = 'rgba(55,153,158,0.99)';
+                annotationElement.style.borderBlockWidth = '2px';
+            }
+        }
+    }).resizable({
+        // resize from all edges and corners
+        edges: {left: true, right: true, bottom: true, top: true},
+        listeners: {
+            move(event) {
+                let target = event.target
+                let x = (parseFloat(target.getAttribute('data-x')) || 0);
+                let y = (parseFloat(target.getAttribute('data-y')) || 0);
+                // update the element's style
+                target.style.width = event.rect.width + 'px';
+                target.style.height = event.rect.height + 'px';
+                // translate when resizing from top or left edges
+                x += event.deltaRect.left;
+                y += event.deltaRect.top;
+                target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+                target.setAttribute('data-x', x.toString());
+                target.setAttribute('data-y', y.toString());
+                pointAnnotationsToArray(event, x, y, event.dx, event.dy, event.rect.width, event.rect.height);
+            }
+        },
+        modifiers: [
+            // keep the edges inside the parent
+            interact.modifiers.restrictEdges({
+                outer: 'parent'
+            }),
+            // minimum size
+            interact.modifiers.restrictSize({
+                min: {width: 25, height: 25}
+            })
+        ],
+        inertia: true
+    });
+
+    function dragMoveListener(event) {
+        let target = event.target
+        // console.log(event.dx);
+        // keep the dragged position in the data-x/data-y attributes
+        let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
+        let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
+        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+        // update the position attributes
+        target.setAttribute('data-x', x)
+        target.setAttribute('data-y', y)
+        pointAnnotationsToArray(event, x, y, event.dx, event.dy);
+    }
+
+    // this function is used later in the resizing and gesture demos
+    window.dragMoveListener = dragMoveListener;
+
+    document.getElementById('save_changes').addEventListener('click', (event) => {
+        if (selectedFileName !== '') {
+            if (itemId === '') {
+                fetch(`${SERVER_URL}/file`, {
+                    method: 'POST', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: Date.now(),
+                        img_path: selectedFileName,
+                        annotations: annotationsArray,
+                    }),
+                }).then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            document.getElementById('success_modal').style.display = 'block';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                fetch(`${SERVER_URL}/file/${itemId}`, {
+                    method: 'PATCH', // or 'PUT'
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: itemId,
+                        img_path: selectedFileName,
+                        annotations: annotationsArray,
+                    }),
+                }).then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            document.getElementById('success_modal').style.display = 'block';
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    });
+</script>
+</body>
+</html>

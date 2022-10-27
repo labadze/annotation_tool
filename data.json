@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1666908171866,
+        "img_path": "Peter_Gric_Tutt'Art@_(18).jpg",
+        "annotations": [
+            {
+                "annotation_id": "annotation0",
+                "styles": "translate(' + 452 + 'px,' + 133 + 'px)",
+                "x": 452,
+                "y": 133,
+                "dx": 0,
+                "dy": 0
+            }
+        ]
+    },
+    {
+        "id": 1666907702544,
+        "img_path": "Warmhole_pgri12_192235.jpg",
+        "annotations": [
+            {
+                "annotation_id": "annotation0",
+                "styles": "translate(' + 658 + 'px,' + 190 + 'px)",
+                "x": 658,
+                "y": 190,
+                "dx": 0,
+                "dy": 0
+            },
+            {
+                "annotation_id": "annotation1",
+                "styles": "translate(' + 500 + 'px,' + 352 + 'px)",
+                "x": 500,
+                "y": 352,
+                "dx": 0,
+                "dy": 0
+            }
+        ]
+    },
+    {
+        "id": 1666900975635,
+        "img_path": "gric-peter.jpg",
+        "annotations": []
+    },
+    {
+        "id": 1666906241273,
+        "img_path": "img13.png",
+        "annotations": []
+    },
+    {
+        "id": 1666906094980,
+        "img_path": "images.jpeg",
+        "annotations": []
+    },
+    {
+        "id": 1666900990412,
+        "img_path": "Peter_Gric_Tutt'Art@(19).jpg",
+        "annotations": []
+    },
+    {
+        "id": 1666900549163,
+        "img_path": "Peter_Gric_(28).jpg",
+        "annotations": [
+            {
+                "annotation_id": "annotation0",
+                "styles": "translate(' + 332 + 'px,' + 111 + 'px)",
+                "x": 332,
+                "y": 111,
+                "dx": 0,
+                "dy": 0
+            },
+            {
+                "annotation_id": "annotation2",
+                "dx": 0,
+                "dy": -1,
+                "height": 71,
+                "styles": "translate(' + 522 + 'px,' + 160 + 'px)",
+                "width": 159.1999969482422,
+                "x": 522,
+                "y": 160
+            },
+            {
+                "annotation_id": "annotation1",
+                "dx": 0,
+                "dy": 1,
+                "height": 100,
+                "styles": "translate(' + 549 + 'px,' + 96 + 'px)",
+                "width": 159.1999969482422,
+                "x": 549,
+                "y": 96
+            }
+        ]
+    }
+]
