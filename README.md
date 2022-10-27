@@ -26,6 +26,8 @@ Create virtual environment using script:
 
 Or you can do it manually:
 
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
+
 ### Windows users:
 
 `python -m pip install --upgrade pip`
@@ -80,16 +82,18 @@ All images supported by browsers can be used, now it's tested with file types: `
     │   ├── img                          # !!!IMPORTTANT!!! Your content (IMAGES) must be here...
     │   └── w3.css                       # Stylesheet CSS for goo visual
     ├── templates                        # Here are files which python renders in browser
-    │   ├── controllers                  # Controllers
     │   └── index.html                   # Main file which is shown for user at start, most operations are called from here
     ├── tests                            # Test running via pytest engine
-    ├── .env                             # .env needed to run application localy
     ├── .gitignore                       # Requered to prevent load venv to git repository
     ├── app.py                           # Programmatically everything nice happens here
     ├── data.json                        # Here is stored annotations data, coordinates, other values including image names from img folder
     ├── LICENSE                          # Standard license from upwork copied here
+    ├── main.cmd                         # Start application script for MS Windows users
+    ├── main.sh                          # Start application script for Linux users
     ├── README.md                        # you're here
-    └── requirements.txt                 # Installed packeges via pip are stored here.
+    ├── requirements.txt                 # Installed packeges via pip are stored here.
+    ├── setup.sh                         # Setup script for Linux users
+    └── setup.cmd                        # Setup script for MS Windows users
 
 
 ## How it works

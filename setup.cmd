@@ -17,4 +17,7 @@ where python
 
 pip install -r requirements.txt
 
+
+deactivate
+
 ECHO After successful installation you can close this window...
