@@ -1,8 +1,6 @@
 # Annotation Tool V 0.0.1
 
-This is very simple annotation tool, with minimum 3rd party libraries, based on HTML/CSS/JS & Python (Flask).
-
-For annotation manipulations used `interact.js`.
+This is very simple annotation tool, with minimum 3rd party libraries, based on CANVAS HTML/CSS/JS & Python (Flask).
 
 To generate image list place your images to `static/img` it's much better to keep unix type file names (snake_case without special symbols).
 Right now `.PNG`, `JPG`, `JPEG` formats are supported.
@@ -11,7 +9,7 @@ Make sure that `data.json` exists in the project root.
 
 You can view detailed video presentation here.
 
-## One time setup
+## First and One time setup
 
 To run application you need one time setup per machine. 
 
@@ -80,10 +78,11 @@ All images supported by browsers can be used, now it's tested with file types: `
     ├── ...
     ├── static                           # Static folder files and folders located here are accessable for browsers
     │   ├── img                          # !!!IMPORTTANT!!! Your content (IMAGES) must be here...
+    │   ├── favicon.con                  # Favicon file
+    │   ├── snackbar.css                 # Snackbar styles file
     │   └── w3.css                       # Stylesheet CSS for goo visual
     ├── templates                        # Here are files which python renders in browser
     │   └── index.html                   # Main file which is shown for user at start, most operations are called from here
-    ├── tests                            # Test running via pytest engine
     ├── .gitignore                       # Requered to prevent load venv to git repository
     ├── app.py                           # Programmatically everything nice happens here
     ├── data.json                        # Here is stored annotations data, coordinates, other values including image names from img folder
