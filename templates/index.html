@@ -1,110 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Annotation Tool</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Annotation tool, based on canvas, using python flask pure html, javascript, css">
+    <meta name="keywords" content="Python, Flask, HTML, CSS, Javascript, CANVAS, W3CSS, JSON API">
+    <meta name="author" content="Archil Labadze">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="../static/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <link rel="stylesheet" href="../static/snackbar.css">
+    <title>Annotation Tool</title>
     <style>
-        html, body, h1, h2, h3, h4, h5 {
-            font-family: "Raleway", sans-serif
-        }
-
-        #annotation0 {
-            width: 10%;
-            min-height: 50px;
-            margin: 1rem 0 0 1rem;
-            background-color: rgba(34, 201, 238, 0.9);
-            color: rgba(186, 214, 215, 0.99);
-            border-radius: 0.75em;
-            padding: 1%;
-            touch-action: none;
-            user-select: none;
-            font-size: 20px;
-            font-family: sans-serif;
-            overflow: hidden;
-            /* This makes things *much* easier */
-            box-sizing: border-box;
-        }
-
-        #annotation1 {
-            width: 10%;
-            min-height: 50px;
-            margin: 1rem 0 0 1rem;
-            background-color: rgba(238, 204, 34, 0.84);
-            color: white;
-            border-radius: 0.75em;
-            padding: 1%;
-            touch-action: none;
-            user-select: none;
-            font-size: 20px;
-            font-family: sans-serif;
-            overflow: hidden;
-            /* This makes things *much* easier */
-            box-sizing: border-box;
-        }
-
-        #annotation2 {
-            width: 10%;
-            min-height: 50px;
-            margin: 1rem 0 0 1rem;
-            background-color: rgba(34, 238, 68, 0.91);
-            color: white;
-            border-radius: 0.75em;
-            padding: 1%;
-            touch-action: none;
-            user-select: none;
-            font-size: 20px;
-            font-family: sans-serif;
-            overflow: hidden;
-            /* This makes things *much* easier */
-            box-sizing: border-box;
-        }
-
-        #img {
-            margin-left: 16%;
-            position: absolute;
-            top: 25%;
-            z-index: -999;
+        #canvas {
+            background-color: transparent;
         }
     </style>
 </head>
-<body class="w3-light-grey">
-
-<!-- Top container -->
-<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
-    <span class="w3-bar-item w3-right">Annotation Tool Logo</span>
-</div>
-
-<!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
-    <div class="w3-container w3-row">
-        <div class="w3-col s4">
-            <p>Annotation Tool</p>
-        </div>
-    </div>
-    <hr>
+<body>
+<div>
     <div class="w3-container">
-        <h5>Image files</h5>
-    </div>
-    <div class="w3-bar-block" id="menu_list"></div>
-</nav>
-<!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
-    <!-- Header -->
-    <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Workspace</b></h5>
-        <button id="save_changes" class="w3-btn w3-blue-gray w3-wide w3-right">SAVE</button>
-    </header>
-    <div class="w3-row-padding w3-margin-bottom" style="height: 100vh;">
         <div id="success_modal" class="w3-modal">
             <div class="w3-modal-content w3-animate-top w3-card-4">
                 <header class="w3-container w3-white">
-        <span onclick="document.getElementById('success_modal').style.display='none'"
+        <span onclick="reloadAndSelectFile()"
               class="w3-button w3-display-topright">&times;</span>
                     <h4 class="w3-center">Operation success</h4>
                 </header>
@@ -116,41 +33,412 @@
                 </footer>
             </div>
         </div>
-        <div class="annotation" style="display: block;" id="annotation0"></div>
-        <div class="annotation" style="display: block;" id="annotation1"></div>
-        <div class="annotation" style="display: block;" id="annotation2"></div>
-        <img class="w3-hide" id="img" alt="" src="">
+        <div class="w3-bar-block w3-quarter w3-sand" id="menu_list" style="max-width: 300px;"></div>
+        <div class="w3-quarter" style="max-width: 300px;" id="label_selector">
+            <div class="w3-margin w3-padding">
+                <button class="w3-btn w3-red" style="min-width: 250px; max-width: 250px;"
+                        id="0" onclick="defineLabel('0')">RED
+                </button>
+            </div>
+            <div class="w3-margin w3-padding">
+                <button class="w3-btn w3-green" style="min-width: 250px; max-width: 250px;" id="1"
+                        onclick="defineLabel('1')">GREEN
+                </button>
+            </div>
+            <div class="w3-margin w3-padding">
+                <button class="w3-btn w3-blue" style="min-width: 250px; max-width: 250px;" id="2"
+                        onclick="defineLabel('2')">BLUE
+                </button>
+            </div>
+
+            <div class="w3-margin w3-padding">
+                <button class="w3-btn w3-blue-gray" style="min-width: 250px; max-width: 250px;" id="save_changes">SAVE
+                    CHANGES
+                </button>
+            </div>
+
+        </div>
+        <div class="w3-rest">
+            <canvas id="canvas"></canvas>
+            <!--            <img class="w3-hide" id="img" alt="" src=""/>-->
+        </div>
     </div>
-    <!-- Footer -->
-    <footer class="w3-container w3-padding-16 w3-light-grey">
-        <p>Powered</p>
-    </footer>
-    <!-- End page content -->
+    <!-- The actual snackbar -->
+    <div id="snackbar"></div>
 </div>
 <script>
     // API URL
     const SERVER_URL = 'http://127.0.0.1:5000';
-    // Entry ID
-    let itemId = '';
-    // File name from list
-    let selectedFileName = '';
-    // Annotation array
-    /*
-    * Keeps annotation coords, and style
-    * */
-    let annotationsArray = [];
-
-    //
+    // Define menu ids to make menu item active and set dots to changed files
     let menuIds = [];
+    // File item id
+    itemId = null;
+    // Selected button label
+    let selectedLabel = null;
+    let selectedAnnotationText = null;
+    let hardCodedAnnotationText0 = 'Annotation Text 0';
+    let hardCodedAnnotationText1 = 'Annotation Text 1';
+    let hardCodedAnnotationText2 = 'Annotation Text 2';
+    let colorToSet0 = 'red';
+    let colorToSet1 = 'green';
+    let colorToSet2 = 'blue';
 
-    //
-    const annotationText0 = 'Annotation Text 0';
-    const annotationText1 = 'Annotation Text 1';
-    const annotationText2 = 'Annotation Text 2';
-    const annotationColor = 'rgba(3,149,153,0.99)';
-    const annotationBorderColor = 'rgba(55,153,158,0.99)';
+    let colorToSet = null;
+    let selectedFileName = null;
+
+    let w = 0;
+    let h = 0;
+    /*
+    * Drawing
+    * */
+    let lineOffset = 4;
+    let anchorSize = 2;
+
+    let mousedown = false;
+    let clickedArea = {box: -1, pos: 'o'};
+    let x1 = -1;
+    let y1 = -1;
+    let x2 = -1;
+    let y2 = -1;
+
+    let boxes = [];
+    let tmpBox = null;
+
+    let prevRect = {x: null, y: null, w: null, h: null};
+    let boxesToAppend = [];
+
+    const defineLabel = (labelId) => {
+        selectedLabel = labelId;
+        if (labelId === '0') {
+            colorToSet = colorToSet0;
+            selectedAnnotationText = hardCodedAnnotationText0;
+            remapSelection(labelId);
+        }
+        if (labelId === '1') {
+            colorToSet = colorToSet1;
+            selectedAnnotationText = hardCodedAnnotationText1;
+            remapSelection(labelId);
+        }
+
+        if (labelId === '2') {
+            colorToSet = colorToSet2;
+            selectedAnnotationText = hardCodedAnnotationText2;
+            remapSelection(labelId);
+        }
+    };
+
+    const remapSelection = (itemId) => {
+        for (let selectorItem of document.getElementById("label_selector").children) {
+            const buttonId = selectorItem.firstElementChild.id;
+            if (buttonId === itemId) {
+                document.getElementById(buttonId).classList.add(...["w3-border", "w3-border-gray", "w3-text-grey"]);
+            } else {
+                let ces = [];
+                document.getElementById(buttonId).classList.forEach((c) => {
+                    if (c !== "w3-border" && c !== "w3-border-gray" && c !== "w3-text-grey") {
+                        ces.push(c);
+                    }
+                });
+                document.getElementById(buttonId).classList.remove(...["w3-border", "w3-border-gray", "w3-text-grey"]);
+
+            }
+        }
+    }
+
+
+    // Shown snackbar with message
+    const showSnackBar = (message) => {
+        // Get the snackbar DIV
+        let x = document.getElementById("snackbar");
+        // Add the "show" class to DIV
+        x.className = "show";
+        // Set text
+        x.textContent = message;
+        // After 3 seconds, remove the show class from DIV
+        setTimeout(() => {
+            x.className = x.className.replace("show", "");
+        }, 3000);
+    }
+
+    /*
+    * Draw frames
+    * */
+
+    document.getElementById("canvas").onmousedown = function (e) {
+        mousedown = true;
+        clickedArea = findCurrentArea(e.offsetX, e.offsetY);
+        x1 = e.offsetX;
+        y1 = e.offsetY;
+        x2 = e.offsetX;
+        y2 = e.offsetY;
+    };
+    document.getElementById("canvas").onmouseup = function (e) {
+        if (clickedArea.box === -1 && tmpBox !== null) {
+            boxes.push(tmpBox);
+        } else if (clickedArea.box !== -1) {
+            let selectedBox = boxes[clickedArea.box];
+            if (selectedBox.x1 > selectedBox.x2) {
+                let previousX1 = selectedBox.x1;
+                selectedBox.x1 = selectedBox.x2;
+                selectedBox.x2 = previousX1;
+            }
+            if (selectedBox.y1 > selectedBox.y2) {
+                let previousY1 = selectedBox.y1;
+                selectedBox.y1 = selectedBox.y2;
+                selectedBox.y2 = previousY1;
+            }
+        }
+        clickedArea = {box: -1, pos: 'o'};
+        tmpBox = null;
+        mousedown = false;
+        console.log(boxes);
+    };
+    document.getElementById("canvas").onmouseout = function (e) {
+        if (clickedArea.box !== -1) {
+            let selectedBox = boxes[clickedArea.box];
+            if (selectedBox.x1 > selectedBox.x2) {
+                let previousX1 = selectedBox.x1;
+                selectedBox.x1 = selectedBox.x2;
+                selectedBox.x2 > previousX1;
+            }
+            if (selectedBox.y1 > selectedBox.y2) {
+                let previousY1 = selectedBox.y1;
+                selectedBox.y1 = selectedBox.y2;
+                selectedBox.y2 > previousY1;
+            }
+        }
+        mousedown = false;
+        clickedArea = {box: -1, pos: 'o'};
+        tmpBox = null;
+    };
+    document.getElementById("canvas").onmousemove = function (e) {
+        if (mousedown && clickedArea.box === -1) {
+            x2 = e.offsetX;
+            y2 = e.offsetY;
+            redraw();
+        } else if (mousedown && clickedArea.box !== -1) {
+            x2 = e.offsetX;
+            y2 = e.offsetY;
+            xOffset = x2 - x1;
+            yOffset = y2 - y1;
+            x1 = x2;
+            y1 = y2;
+
+            if (clickedArea.pos === 'i' ||
+                clickedArea.pos === 'tl' ||
+                clickedArea.pos === 'l' ||
+                clickedArea.pos === 'bl') {
+                boxes[clickedArea.box].x1 += xOffset;
+            }
+            if (clickedArea.pos === 'i' ||
+                clickedArea.pos === 'tl' ||
+                clickedArea.pos === 't' ||
+                clickedArea.pos === 'tr') {
+                boxes[clickedArea.box].y1 += yOffset;
+            }
+            if (clickedArea.pos === 'i' ||
+                clickedArea.pos === 'tr' ||
+                clickedArea.pos === 'r' ||
+                clickedArea.pos === 'br') {
+                boxes[clickedArea.box].x2 += xOffset;
+            }
+            if (clickedArea.pos === 'i' ||
+                clickedArea.pos === 'bl' ||
+                clickedArea.pos === 'b' ||
+                clickedArea.pos === 'br') {
+                boxes[clickedArea.box].y2 += yOffset;
+            }
+            redraw();
+        }
+    }
+    document.getElementById("canvas").addEventListener("mousemove", (event) => {
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        // important: correct mouse position:
+        let rect = event.target.getBoundingClientRect();
+        let x = event.clientX - rect.left;
+        let y = event.clientY - rect.top;
+        for (const box of boxes) {
+            context.beginPath();
+            context.rect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+            if (context.isPointInPath(x, y)) {
+                context.closePath();
+                context.beginPath();
+                context.lineWidth = 1;
+                context.fillStyle = 'white';
+                context.strokeStyle = box.color;
+                context.rect(box.x2, box.y1 - 20, 20, 20);
+                // context.stroke();
+                context.fillText('X', box.x2 + 5, (box.y1 - 5));
+                context.closePath();
+                if (prevRect.x === null && prevRect.y === null && prevRect.w === null && prevRect.h === null) {
+                    prevRect.x = box.x2;
+                    prevRect.y = box.y1 - 20;
+                    prevRect.w = 20;
+                    prevRect.h = 20;
+                }
+                // break;
+            } else {
+                setTimeout(() => {
+                    if (prevRect.x !== null && prevRect.y !== null && prevRect.w !== null && prevRect.h !== null) {
+                        context.beginPath();
+                        context.clearRect(prevRect.x, prevRect.y, prevRect.w, prevRect.h);
+                        context.closePath();
+                        prevRect = {x: null, y: null, w: null, h: null};
+                    }
+                }, 1500);
+            }
+            context.closePath();
+        }
+    });
+    document.getElementById("canvas").addEventListener("click", (event) => {
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        // important: correct mouse position:
+        let rect = event.target.getBoundingClientRect();
+        let x = event.clientX - rect.left;
+        let y = event.clientY - rect.top;
+        for (const box of boxes) {
+            context.beginPath();
+            context.rect(box.x2, box.y1 - 20, 20, 20);
+            if (context.isPointInPath(x, y)) {
+                context.beginPath();
+                context.clearRect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
+                context.closePath();
+                removeBoxFromArray(box);
+            }
+            context.closePath();
+        }
+    });
+
+    const removeBoxFromArray = (box) => {
+        for (let b of boxes) {
+            if (b.id !== box.id) {
+                boxesToAppend.push(b);
+            }
+        }
+        boxes = boxesToAppend;
+        redraw();
+        boxesToAppend = [];
+    }
+
+    function redraw() {
+        // canvas.width = canvas.width;
+        let context = document.getElementById("canvas").getContext('2d');
+        context.clearRect(0, 0, w || 800, h || 600);
+        context.beginPath();
+        for (let i = 0; i < boxes.length; i++) {
+            drawBoxOn(boxes[i], context);
+        }
+
+        if (clickedArea.box === -1) {
+            tmpBox = newBox(x1, y1, x2, y2, colorToSet);
+            if (tmpBox != null) {
+                drawBoxOn(tmpBox, context);
+            }
+        }
+    }
+
+    function findCurrentArea(x, y) {
+        for (let i = 0; i < boxes.length; i++) {
+            let box = boxes[i];
+            xCenter = box.x1 + (box.x2 - box.x1) / 2;
+            yCenter = box.y1 + (box.y2 - box.y1) / 2;
+            if (box.x1 - lineOffset < x && x < box.x1 + lineOffset) {
+                if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                    return {box: i, pos: 'tl'};
+                } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                    return {box: i, pos: 'bl'};
+                } else if (yCenter - lineOffset < y && y < yCenter + lineOffset) {
+                    return {box: i, pos: 'l'};
+                }
+            } else if (box.x2 - lineOffset < x && x < box.x2 + lineOffset) {
+                if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                    return {box: i, pos: 'tr'};
+                } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                    return {box: i, pos: 'br'};
+                } else if (yCenter - lineOffset < y && y < yCenter + lineOffset) {
+                    return {box: i, pos: 'r'};
+                }
+            } else if (xCenter - lineOffset < x && x < xCenter + lineOffset) {
+                if (box.y1 - lineOffset < y && y < box.y1 + lineOffset) {
+                    return {box: i, pos: 't'};
+                } else if (box.y2 - lineOffset < y && y < box.y2 + lineOffset) {
+                    return {box: i, pos: 'b'};
+                } else if (box.y1 - lineOffset < y && y < box.y2 + lineOffset) {
+                    return {box: i, pos: 'i'};
+                }
+            } else if (box.x1 - lineOffset < x && x < box.x2 + lineOffset) {
+                if (box.y1 - lineOffset < y && y < box.y2 + lineOffset) {
+                    return {box: i, pos: 'i'};
+                }
+            }
+        }
+        return {box: -1, pos: 'o'};
+    }
+
+    // New box composition
+    function newBox(x1, y1, x2, y2, color) {
+        boxX1 = x1 < x2 ? x1 : x2;
+        boxY1 = y1 < y2 ? y1 : y2;
+        boxX2 = x1 > x2 ? x1 : x2;
+        boxY2 = y1 > y2 ? y1 : y2;
+        if (boxX2 - boxX1 > lineOffset * 2 && boxY2 - boxY1 > lineOffset * 2) {
+            return {
+                id: Date.now().toString(),
+                x1: boxX1,
+                y1: boxY1,
+                x2: boxX2,
+                y2: boxY2,
+                lineWidth: 1,
+                color: color, // 'DeepSkyBlue'
+                annotationText: selectedAnnotationText,
+            };
+        } else {
+            return null;
+        }
+    }
+
+    // Draw shape
+    function drawBoxOn(box, context) {
+        xCenter = box.x1 + (box.x2 - box.x1) / 2;
+        yCenter = box.y1 + (box.y2 - box.y1) / 2;
+
+        // clear prev (to make with different color)
+        context.beginPath();
+        context.strokeStyle = box.color;
+        context.fillStyle = box.color;
+        context.rect(box.x1, box.y1, (box.x2 - box.x1), (box.y2 - box.y1));
+        // close (to make with different color)
+        context.closePath();
+        context.stroke();
+        context.fillText(box.annotationText, box.x1 + 10, (box.y1 + box.y2) / 2);
+        context.fillRect(box.x1 - anchorSize, box.y1 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(box.x1 - anchorSize, yCenter - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(box.x1 - anchorSize, box.y2 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(xCenter - anchorSize, box.y1 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(xCenter - anchorSize, yCenter - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(xCenter - anchorSize, box.y2 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(box.x2 - anchorSize, box.y1 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(box.x2 - anchorSize, yCenter - anchorSize, 2 * anchorSize, 2 * anchorSize);
+        context.fillRect(box.x2 - anchorSize, box.y2 - anchorSize, 2 * anchorSize, 2 * anchorSize);
+    }
+
+    const resetBoxes = () => {
+        boxes = [];
+        redraw();
+    };
+
+    /*
+    * Generating image list menu
+    * */
+
+    let menuBlock = document.getElementById('menu_list');
 
     window.addEventListener('load', (event) => {
+        let params = (new URL(document.location)).searchParams;
+        let efn = params.get("encoded_file_name");
+        let decoded_fn = atob(efn);
         // document.getElementById('save_changes').disabled = true;
         fetch(`${SERVER_URL}/image_list`).then((response) => response.json()).then((data) => {
             // Run for cycle to iterate response item
@@ -179,10 +467,13 @@
                 menuIds.push(menuItem.file_name);
                 // Handle click on item...
                 menuPoint.addEventListener('click', function handleClick(event) {
-                    // Call function to make image visible to pass image path
-                    displayImage(menuItem.file_path);
+                    if (boxes.length > 0) {
+                        resetBoxes();
+                    }
                     // Define selected file name
                     selectedFileName = menuItem.file_name;
+                    // Call function to make image visible to pass image path
+                    displayImage(menuItem.file_path);
                     // Get file name if licked
                     getFileInfo(menuItem.file_name);
                     // add class as active on click
@@ -194,458 +485,134 @@
                     });
                 });
                 // Append item to list
-                menuBlock.appendChild(menuPoint)
+                menuBlock.appendChild(menuPoint);
+                if (menuItem.file_name === decoded_fn) {
+                    // Call function to make image visible to pass image path
+                    displayImage(menuItem.file_path);
+                    // Get file name if licked
+                    getFileInfo(menuItem.file_name);
+                    // add class as active on click
+                    document.getElementById(menuItem.file_name).className = 'w3-bar-item w3-button w3-padding w3-blue';
+                }
             }
+        }).catch(error => {
+            showSnackBar(JSON.stringify(error));
         });
     });
 
+    // Set source for image
+    const displayImage = (imagePath) => {
+        if (boxes.length > 0) {
+            resetBoxes();
+        }
+        document.getElementById("canvas").style.backgroundImage = `url("${imagePath}")`;
+        document.getElementById("canvas").style.backgroundRepeat = 'no-repeat';
+        let canvas = document.getElementById("canvas");
+        let img = new Image();
+        img.src = imagePath;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        // Set new values for general canvas
+        w = img.width;
+        h = img.height;
+    };
+
     /*
-    * Check on click
+    * Check file on click
     * */
     const getFileInfo = (fileName) => {
+        if (boxes.length > 0) {
+            resetBoxes();
+        }
         fetch(`${SERVER_URL}/file?encoded_file_name=${window.btoa(`${fileName}`)}`).then((response) => response.json()).then((data) => {
             if (data.success) {
                 const fetchedData = data.data;
                 itemId = fetchedData.id;
-                if (fetchedData.annotations.length > 0) {
-                    for (const annotation of fetchedData.annotations) {
-                        let annotationElement = document.getElementById(annotation.annotation_id);
-                        annotationElement.textContent = annotation.annotation_text;
-                        annotationElement.style.fontSize = '10px';
-                        annotationElement.style.color = 'rgba(3,149,153,0.99)';
-                        annotationElement.style.borderStyle = 'double';
-                        annotationElement.style.backgroundColor = 'transparent';
-                        annotationElement.style.borderColor = 'rgba(55,153,158,0.99)';
-                        annotationElement.style.borderBlockWidth = '2px';
-
-                        let x = (parseFloat(annotationElement.getAttribute('data-x')) || 0) + annotation.dx
-                        let y = (parseFloat(annotationElement.getAttribute('data-y')) || 0) + annotation.dy
-
-                        annotationElement.style.transform = 'translate(' + annotation.x + 'px, ' + annotation.y + 'px)'
-
-                        if ('with' in annotation) {
-                            annotationElement.style.width = `${Math.floor(annotation.width).toString()}px`;
-                        }
-
-                        if ('height' in annotation) {
-                            annotationElement.style.height = `${Math.floor(annotation.height).toString()}px`;
-                        }
-
-                        // update the position attributes
-                        annotationElement.setAttribute('data-x', annotation.x)
-                        annotationElement.setAttribute('data-y', annotation.y)
-                    }
+                if (boxes.length > 0) {
+                    resetBoxes();
                 }
-                annotationsArray = fetchedData.annotations;
+                boxes = fetchedData.annotations;
+                redraw();
             } else {
-                let ann0 = document.getElementById('annotation0');
-                ann0.style.width = '10%';
-                ann0.style.minHeight = '50px';
-                ann0.style.height = '50px';
-                ann0.style.margin = '1rem 0 0 1rem';
-                ann0.style.backgroundColor = 'rgba(34, 201, 238, 0.9)';
-                ann0.style.color = 'rgba(34, 201, 238, 0.9)';
-                ann0.style.borderRadius = '0.75em';
-                ann0.style.padding = '1%';
-                ann0.style.touchAction = 'none';
-                ann0.style.userSelect = 'none';
-                ann0.style.fontSize = '13px';
-                ann0.style.fontFamily = 'sans-serif';
-                ann0.style.overflow = 'hidden';
-                ann0.style.boxSizing = 'border-box';
-                ann0.textContent = '';
-                ann0.setAttribute('data-x', '0');
-                ann0.setAttribute('data-y', '0');
-                ann0.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-
-                let ann1 = document.getElementById('annotation1');
-                ann1.style.width = '10%';
-                ann1.style.minHeight = '50px';
-                ann1.style.height = '50px';
-                ann1.style.margin = '1rem 0 0 1rem';
-                ann1.style.backgroundColor = 'rgba(238, 204, 34, 0.84)';
-                ann1.style.color = 'rgba(238, 204, 34, 0.84)';
-                ann1.style.borderRadius = '0.75em';
-                ann1.style.padding = '1%';
-                ann1.style.touchAction = 'none';
-                ann1.style.userSelect = 'none';
-                ann1.style.fontSize = '13px';
-                ann1.style.fontFamily = 'sans-serif';
-                ann1.style.overflow = 'hidden';
-                ann1.style.boxSizing = 'border-box';
-                ann1.textContent = '';
-                ann1.setAttribute('data-x', '0');
-                ann1.setAttribute('data-y', '0');
-                ann1.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-
-                let ann2 = document.getElementById('annotation2');
-                ann2.style.width = '10%';
-                ann2.style.minHeight = '50px';
-                ann2.style.height = '50px';
-                ann2.style.margin = '1rem 0 0 1rem';
-                ann2.style.backgroundColor = 'rgba(34, 238, 68, 0.91)';
-                ann2.style.color = 'rgba(34, 238, 68, 0.91)';
-                ann2.style.borderRadius = '0.75em';
-                ann2.style.padding = '1%';
-                ann2.style.touchAction = 'none';
-                ann2.style.userSelect = 'none';
-                ann2.style.fontSize = '13px';
-                ann2.style.fontFamily = 'sans-serif';
-                ann2.style.overflow = 'hidden';
-                ann2.style.boxSizing = 'border-box';
-                ann2.textContent = '';
-                ann2.setAttribute('data-x', '0');
-                ann2.setAttribute('data-y', '0');
-                ann2.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-
-                annotationsArray = [];
-                itemId = '';
+                showSnackBar(data.error);
             }
-        }).catch(err => {
-            console.error(err);
+        }).catch(error => {
+            showSnackBar(JSON.stringify(error));
         });
     }
 
-    // Set source
-    const displayImage = (imagePath) => {
-        let img = document.getElementById('img')
-        img.className = 'w3-show';
-        img.src = imagePath;
-    };
-
-    // Remove annotation from array
-
-    const removeAnnotationFromArray = (annotationId) => {
-        let arrayWithoutRemoveCandidate = [];
-        for (const item of annotationsArray) {
-            if (item.annotation_id !== annotationId) {
-                arrayWithoutRemoveCandidate.push(item);
-            }
-        }
-        annotationsArray = arrayWithoutRemoveCandidate;
-    };
-
-    // Set annotation to init point
-    const setToInit = (elementId) => {
-        let ann = document.getElementById(elementId);
-        ann.style.width = '10%';
-        ann.style.minHeight = '50px';
-        ann.style.height = '50px';
-        ann.style.margin = '1rem 0 0 1rem';
-        if (elementId === 'annotation0') {
-            ann.style.backgroundColor = 'rgba(34, 201, 238, 0.9)';
-            ann.style.color = 'rgba(34, 201, 238, 0.9)';
-        }
-
-        if (elementId === 'annotation1') {
-            ann.style.backgroundColor = 'rgba(238, 204, 34, 0.84)';
-            ann.style.color = 'rgba(238, 204, 34, 0.84)';
-        }
-        if (elementId === 'annotation2') {
-            ann.style.backgroundColor = 'rgba(34, 238, 68, 0.91)';
-            ann.style.color = 'rgba(34, 238, 68, 0.91)';
-        }
-        ann.style.borderRadius = '0.75em';
-        ann.style.padding = '1%';
-        ann.style.touchAction = 'none';
-        ann.style.userSelect = 'none';
-        ann.style.fontSize = '13px';
-        ann.style.fontFamily = 'sans-serif';
-        ann.style.overflow = 'hidden';
-        ann.style.boxSizing = 'border-box';
-        ann.textContent = '';
-        ann.setAttribute('data-x', '0');
-        ann.setAttribute('data-y', '0');
-        ann.style.transform = 'translate(' + 0 + 'px, ' + 0 + 'px)';
-    };
-
-    const firstAnnotationElement = document.getElementById('annotation0');
-
-    firstAnnotationElement.addEventListener('mouseover', (event) => {
-        if (firstAnnotationElement.childNodes.length === 1) {
-            // It has at least one
-            let closeButton = document.createElement('span');
-            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
-            closeButton.id = 'close_annotation_0';
-            closeButton.style.display = 'block';
-            closeButton.innerText = 'X';
-            firstAnnotationElement.appendChild(closeButton);
-            closeButton.addEventListener('click', (event) => {
-                // firstAnnotationElement.style.display = 'none';
-                firstAnnotationElement.textContent = '';
-                setToInit('annotation0');
-                removeAnnotationFromArray('annotation0');
-            });
-        }
-    });
-
-    firstAnnotationElement.addEventListener('mouseout', (event) => {
-        if (firstAnnotationElement.childNodes.length > 1) {
-            setTimeout(() => {
-                if (document.getElementById('close_annotation_0') !== null) {
-                    document.getElementById('close_annotation_0').remove();
-                }
-            }, 1500);
-        }
-    });
-
-    const secondAnnotationElement = document.getElementById('annotation1');
-
-    secondAnnotationElement.addEventListener('mouseover', (event) => {
-        if (secondAnnotationElement.childNodes.length === 1) {
-            // It has at least one
-            let closeButton = document.createElement('span');
-            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
-            closeButton.id = 'close_annotation_1';
-            closeButton.style.display = 'block';
-            closeButton.innerText = 'X';
-            secondAnnotationElement.appendChild(closeButton);
-            closeButton.addEventListener('click', (event) => {
-                // secondAnnotationElement.style.display = 'none';
-                secondAnnotationElement.textContent = '';
-                setToInit('annotation1');
-                removeAnnotationFromArray('annotation1');
-            });
-        }
-    });
-
-    secondAnnotationElement.addEventListener('mouseout', (event) => {
-        if (secondAnnotationElement.childNodes.length > 1) {
-            setTimeout(() => {
-                if (document.getElementById('close_annotation_1') !== null) {
-                    document.getElementById('close_annotation_1').remove();
-                }
-            }, 1500);
-        }
-    });
-
-
-    const thirdAnnotationElement = document.getElementById('annotation2');
-
-    thirdAnnotationElement.addEventListener('mouseover', (event) => {
-        if (thirdAnnotationElement.childNodes.length === 1) {
-            // It has at least one
-            let closeButton = document.createElement('span');
-            closeButton.className = 'w3-btn w3-small w3-sand w3-right';
-            closeButton.id = 'close_annotation_2';
-            closeButton.style.display = 'block';
-            closeButton.innerText = 'X';
-            thirdAnnotationElement.appendChild(closeButton);
-            closeButton.addEventListener('click', (event) => {
-                // thirdAnnotationElement.style.display = 'none';
-                thirdAnnotationElement.textContent = '';
-                setToInit('annotation2');
-                removeAnnotationFromArray('annotation2');
-            });
-        }
-    });
-
-    thirdAnnotationElement.addEventListener('mouseout', (event) => {
-        if (thirdAnnotationElement.childNodes.length > 1) {
-            setTimeout(() => {
-                if (document.getElementById('close_annotation_2') !== null) {
-                    document.getElementById('close_annotation_2').remove();
-                }
-            }, 1500);
-        }
-    });
-
-    let menuBlock = document.getElementById('menu_list');
-
-    const pointAnnotationsToArray = (event, x, y, dx, dy, w, h) => {
-        let annotationText = 'Annotation Text';
-        if (event.target.id === 'annotation0') {
-            annotationText = annotationText0;
-        }
-
-        if (event.target.id === 'annotation1') {
-            annotationText = annotationText1;
-        }
-
-        if (event.target.id === 'annotation2') {
-            annotationText = annotationText2;
-        }
-        const annotationObject = {
-            annotation_id: event.target.id,
-            styles: `translate(' + ${x} + 'px,' + ${y} + 'px)`,
-            x: x,
-            y: y,
-            dx: dx,
-            dy: dy,
-            width: w,
-            height: h,
-            annotation_text: annotationText,
-        };
-        if (annotationsArray.filter(a => a.annotation_id === event.target.id).length === 0) {
-            annotationsArray.push(annotationObject);
-        } else {
-            let updatedArray = [];
-            updatedArray.push(annotationObject);
-            for (const k of annotationsArray) {
-                if (k.annotation_id !== event.target.id) {
-                    updatedArray.push(k);
-                }
-            }
-            annotationsArray = updatedArray;
-        }
-        // if (annotationsArray.length > 0) {
-        //     document.getElementById('save_changes').disabled = false;
-        // } else {
-        //     document.getElementById('save_changes').disabled = true;
-        // }
-    };
-
-    // target elements with the "draggable" class
-    interact('.annotation').draggable({
-        // enable inertial throwing
-        inertia: true,
-        // keep the element within the area of it's parent
-        modifiers: [
-            interact.modifiers.restrictRect({
-                restriction: 'parent',
-                endOnly: true
-            })
-        ],
-        // enable autoScroll
-        autoScroll: true,
-        listeners: {
-            // start(event) {
-            //     console.log(event.type, event.target)
-            // },
-            // call this function on every drag-move event
-            move: dragMoveListener,
-            // call this function on every dragend event
-            end(event) {
-                let annotationElement = document.getElementById(event.target.id);
-                if (event.target.id === 'annotation0') {
-                    annotationElement.textContent = 'Annotation text';
-                }
-
-                if (event.target.id === 'annotation1') {
-                    annotationElement.textContent = 'Annotation text 1';
-                }
-
-                if (event.target.id === 'annotation2') {
-                    annotationElement.textContent = 'Annotation text 2';
-                }
-
-                // Annotation styles
-                annotationElement.style.fontSize = '10px';
-                annotationElement.style.color = 'rgba(3,149,153,0.99)';
-                annotationElement.style.borderStyle = 'double';
-                annotationElement.style.backgroundColor = 'transparent';
-                annotationElement.style.borderColor = 'rgba(55,153,158,0.99)';
-                annotationElement.style.borderBlockWidth = '2px';
-            }
-        }
-    }).resizable({
-        // resize from all edges and corners
-        edges: {left: true, right: true, bottom: true, top: true},
-        listeners: {
-            move(event) {
-                let target = event.target
-                let x = (parseFloat(target.getAttribute('data-x')) || 0);
-                let y = (parseFloat(target.getAttribute('data-y')) || 0);
-                // update the element's style
-                target.style.width = event.rect.width + 'px';
-                target.style.height = event.rect.height + 'px';
-                // translate when resizing from top or left edges
-                x += event.deltaRect.left;
-                y += event.deltaRect.top;
-                target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
-                target.setAttribute('data-x', x.toString());
-                target.setAttribute('data-y', y.toString());
-                pointAnnotationsToArray(event, x, y, event.dx, event.dy, event.rect.width, event.rect.height);
-            }
-        },
-        modifiers: [
-            // keep the edges inside the parent
-            interact.modifiers.restrictEdges({
-                outer: 'parent'
-            }),
-            // minimum size
-            interact.modifiers.restrictSize({
-                min: {width: 25, height: 25}
-            })
-        ],
-        inertia: true
-    });
-
-    function dragMoveListener(event) {
-        let target = event.target
-        // console.log(event.dx);
-        // keep the dragged position in the data-x/data-y attributes
-        let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-        // update the position attributes
-        target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
-        pointAnnotationsToArray(event, x, y, event.dx, event.dy);
-    }
-
-    // this function is used later in the resizing and gesture demos
-    window.dragMoveListener = dragMoveListener;
-
     document.getElementById('save_changes').addEventListener('click', (event) => {
-        if (selectedFileName !== '') {
-            if (itemId === '') {
-                fetch(`${SERVER_URL}/file`, {
-                    method: 'POST', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: Date.now(),
-                        img_path: selectedFileName,
-                        annotations: annotationsArray,
-                    }),
-                }).then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            document.getElementById('success_modal').style.display = 'block';
-                            const menuItem = document.getElementById(selectedFileName);
-                            // menuItem.removeChild(menuItem.childNodes[1]);
-                            const spanEl = document.createElement('span');
-                            spanEl.className = 'w3-right';
-                            const dotText = document.createTextNode('•');
-                            spanEl.appendChild(dotText);
-                            menuItem.appendChild(spanEl);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+        if (boxes.length > 0) {
+            if (selectedFileName !== null) {
+                if (itemId === null) {
+                    showSnackBar("Creating new entry (file including annotations)...");
+                    fetch(`${SERVER_URL}/file`, {
+                        method: 'POST', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: Date.now(),
+                            img_path: selectedFileName,
+                            annotations: boxes,
+                        }),
+                    }).then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                document.getElementById('success_modal').style.display = 'block';
+                                const menuItem = document.getElementById(selectedFileName);
+                                const spanEl = document.createElement('span');
+                                spanEl.className = 'w3-right';
+                                const dotText = document.createTextNode('•');
+                                spanEl.appendChild(dotText);
+                                menuItem.appendChild(spanEl);
+                            }
+                        })
+                        .catch((error) => {
+                            showSnackBar(JSON.stringify(error));
+                        });
+                } else {
+                    showSnackBar("Saving your changes...");
+                    fetch(`${SERVER_URL}/file/${itemId}`, {
+                        method: 'PATCH', // or 'PUT'
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: itemId,
+                            img_path: selectedFileName,
+                            annotations: boxes,
+                        }),
+                    }).then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                document.getElementById('success_modal').style.display = 'block';
+                                const menuItem = document.getElementById(selectedFileName);
+                                const spanEl = document.createElement('span');
+                                spanEl.className = 'w3-right';
+                                const dotText = document.createTextNode('•');
+                                spanEl.appendChild(dotText);
+                                menuItem.appendChild(spanEl);
+                            }
+                        })
+                        .catch((error) => {
+                            showSnackBar(JSON.stringify(error));
+                        });
+                }
             } else {
-                fetch(`${SERVER_URL}/file/${itemId}`, {
-                    method: 'PATCH', // or 'PUT'
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        id: itemId,
-                        img_path: selectedFileName,
-                        annotations: annotationsArray,
-                    }),
-                }).then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) {
-                            document.getElementById('success_modal').style.display = 'block';
-                            const menuItem = document.getElementById(selectedFileName);
-                            // menuItem.removeChild(menuItem.childNodes[2]);
-                            const spanEl = document.createElement('span');
-                            spanEl.className = 'w3-right';
-                            const dotText = document.createTextNode('•');
-                            spanEl.appendChild(dotText);
-                            menuItem.appendChild(spanEl);
-                        }
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
+                showSnackBar("There is no file selected...");
             }
+        } else {
+            showSnackBar("There are no annotations please create one...");
         }
     });
+
+    const reloadAndSelectFile = () => {
+        document.getElementById('success_modal').style.display = 'none';
+        location.replace(`${SERVER_URL}?encoded_file_name=${window.btoa(`${selectedFileName}`)}`);
+    };
+
+
 </script>
 </body>
 </html>

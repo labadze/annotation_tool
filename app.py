@@ -187,5 +187,10 @@ def render():
     return flask.render_template("index.html")
 
 
+@app.route('/test', methods=['GET'])
+def render_test():
+    return flask.render_template("test.html")
+
+
 if __name__ == '__main__':
     app.run(use_reloader=True)
