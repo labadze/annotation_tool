@@ -81,7 +81,7 @@
     let hardCodedAnnotationText2 = 'Annotation Text 2';
     let colorToSet0 = 'red';
     let colorToSet1 = 'green';
-    let colorToSet2 = 'blue';
+    let colorToSet2 = 'DeepSkyBlue';
 
     let colorToSet = null;
     let selectedFileName = null;
@@ -467,9 +467,6 @@
                 menuIds.push(menuItem.file_name);
                 // Handle click on item...
                 menuPoint.addEventListener('click', function handleClick(event) {
-                    if (boxes.length > 0) {
-                        resetBoxes();
-                    }
                     // Define selected file name
                     selectedFileName = menuItem.file_name;
                     // Call function to make image visible to pass image path
@@ -488,9 +485,7 @@
                 menuBlock.appendChild(menuPoint);
                 if (menuItem.file_name === decoded_fn) {
                     // Call function to make image visible to pass image path
-                    displayImage(menuItem.file_path);
-                    // Get file name if licked
-                    getFileInfo(menuItem.file_name);
+                    displayImage(menuItem.file_path, menuItem.file_name);
                     // add class as active on click
                     document.getElementById(menuItem.file_name).className = 'w3-bar-item w3-button w3-padding w3-blue';
                 }
@@ -501,7 +496,7 @@
     });
 
     // Set source for image
-    const displayImage = (imagePath) => {
+    const displayImage = (imagePath, fileName) => {
         if (boxes.length > 0) {
             resetBoxes();
         }
@@ -515,15 +510,14 @@
         // Set new values for general canvas
         w = img.width;
         h = img.height;
+         // Get file name if licked
+        getFileInfo(fileName);
     };
 
     /*
     * Check file on click
     * */
     const getFileInfo = (fileName) => {
-        if (boxes.length > 0) {
-            resetBoxes();
-        }
         fetch(`${SERVER_URL}/file?encoded_file_name=${window.btoa(`${fileName}`)}`).then((response) => response.json()).then((data) => {
             if (data.success) {
                 const fetchedData = data.data;
@@ -534,7 +528,7 @@
                 boxes = fetchedData.annotations;
                 redraw();
             } else {
-                showSnackBar(data.error);
+                itemId = null;
             }
         }).catch(error => {
             showSnackBar(JSON.stringify(error));
