@@ -2,12 +2,22 @@
 
 This is very simple annotation tool, with minimum 3rd party libraries, based on CANVAS HTML/CSS/JS & Python (Flask).
 
+
 To generate image list place your images to `static/img` it's much better to keep unix type file names (snake_case without special symbols).
+
 Right now `.PNG`, `JPG`, `JPEG` formats are supported.
 
 Make sure that `data.json` exists in the project root.
 
-You can view detailed video presentation here.
+You can view detailed video presentation (here)[https://youtu.be/XdZvH-sYCs0] .
+
+More documentation is presented in (Wiki)[https://github.com/labadze/annotation_tool/wiki] .
+
+If you have found some issue please write down (Here)[https://github.com/labadze/annotation_tool/issues]
+
+NOTE __I'm checking non critical issues every 24 hours every working day (Monday-Friday)__
+
+
 
 ## First and One time setup
 
@@ -48,6 +58,13 @@ For example: `image.png`, `pucture.jpg`, `some_name_of_file.jpeg` .
 ### Supported file types
 
 All images supported by browsers can be used, now it's tested with file types: `.PNG`, `JPG`, `JPEG`
+
+
+## How to report issue:
+
+Issue must have following format:
+
+ - OS (Windows, Linux, Mac) please
 
 
 
