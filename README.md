@@ -15,49 +15,28 @@ You can view detailed video presentation here.
 
 To run application you need one time setup per machine. 
 
-Make sure you've installed python 3.8 or higher.
+Make sure you've installed python 3.9 or higher.
 
-Just open terminal for linux or cmd for windows and type `python`
+Just open terminal for linux or cmd for windows and type `python --version` you will see version of python
 
 
-Create virtual environment using script:
+Create virtual environment and install all required packages using script:
  - For Linux Mac BSD systems `setup.sh`
  - For Windows `setup.cmd`
 
-Or you can do it manually:
-
-https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/
-
-### Windows users:
-
-`python -m pip install --upgrade pip`
-
-`python -m pip --version`
-
-Install virtualenv 
-
-`python -m pip install --user virtualenv`
-
-And now go to project directory `cd C:\annotation_tool`
-
-and create venv
-
-`python -m venv venv`
-
-Now activate your env:
-
-`.\env\Scripts\activate`
 
 ## Run application
 
 All you need is run `main.sh` for Linux / Mac or click `main.cmd` for Windows .
 
-Note for display any changes you need to rerun application.
+!!! IMPORTANT NOTE !!! to make changes you need to rerun application (Close console window `main.sh` or `main.cmd` and run it again).
 
 
 ## Usage specifications
 
-There is no image upload mechanism for this application. So to build annotation make sure that you have 2 components:
+There is no image upload mechanism for this application. 
+
+So to build annotation make sure that you have 2 components:
 
  - In `/static/img` placed images
  - `data.json` in project root
@@ -65,6 +44,8 @@ There is no image upload mechanism for this application. So to build annotation 
 IMPORTANT please choose file names without spaces or special characters, the best way is shown in an example bellow:
 
 `file_name.extenstion`
+
+Foe example: `image.png`, `picture.jpg`, `some_name.jpeg`
 
 
 
