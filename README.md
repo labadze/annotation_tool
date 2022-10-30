@@ -1,6 +1,6 @@
 # Annotation Tool V 0.0.1
 
-Important to get working version visit (Releases)[https://github.com/labadze/annotation_tool/releases]
+Important to get working version visit [Releases](https://github.com/labadze/annotation_tool/releases)
 
 Release ready version in `release` branch not `master` (But in most cases there is same data.
 
@@ -16,9 +16,9 @@ Right now `.PNG`, `JPG`, `JPEG` formats are supported.
 
 Make sure that `data.json` exists in the project root.
 
-More documentation is presented in (Wiki)[https://github.com/labadze/annotation_tool/wiki] .
+More documentation is presented in [Wiki](https://github.com/labadze/annotation_tool/wiki) .
 
-If you have found some issue please write down (Here)[https://github.com/labadze/annotation_tool/issues]
+If you have found some issue please write down [Here](https://github.com/labadze/annotation_tool/issues)
 
 NOTE __I'm checking non critical issues every 24 hours every working day (Monday-Friday)__
 
