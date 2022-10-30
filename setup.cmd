@@ -24,8 +24,20 @@ python -m venv venv
 ECHO Activating virtual environment
 ECHO ==============================
 
+
 .\venv\Scripts\activate & pip install -r requirements.txt
 
+ECHO Getting where python is
+ECHO ========================
+
+where python
+
+ECHO Installing requirements pip install -r requirements.txt
+ECHO ========================
+
+
+ECHO Deactivationg env
+ECHO ==========================
 
 ECHO Deactivationg env
 ECHO ==========================

@@ -39,7 +39,7 @@ def get_dir_files():
                 entry = next((x for x in items if str(x["img_path"]) == str(filename)), None)
                 item_json_obj = {
                     "file_path": '{server_url}/static/img/{filename}'.format(filename=filename,
-                                                                             server_url=os.getenv('APP_URL')),
+                                                                             server_url='http://127.0.0.1:5000'),
                     "file_name": filename,
                     "data_available": entry is not None and len(entry["annotations"]) > 0
                 }
@@ -185,6 +185,11 @@ def set_file_info(file_id):
 @app.route('/', methods=['GET'])
 def render():
     return flask.render_template("index.html")
+
+
+@app.route('/test', methods=['GET'])
+def render_test():
+    return flask.render_template("test.html")
 
 
 if __name__ == '__main__':
