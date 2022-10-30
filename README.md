@@ -10,11 +10,14 @@ This is very simple annotation tool, with minimum 3rd party libraries, based on 
 Supported browsers Firefox, Chrome, Safari
 
 
+
 To generate image list place your images to `static/img` it's much better to keep unix type file names (snake_case without special symbols).
 
 Right now `.PNG`, `JPG`, `JPEG` formats are supported.
 
+
 Make sure that `data.json` exists in the project root.
+
 
 More documentation is presented in [Wiki](https://github.com/labadze/annotation_tool/wiki) .
 
@@ -43,12 +46,16 @@ Create virtual environment using script:
 
 All you need is run `main.sh` for Linux / Mac or click `main.cmd` for Windows .
 
+
 Note for display any changes you need to rerun application (Close `main.cmd` or `main.sh` window and run it again.
+
 
 
 ## Usage specifications
 
-There is no image upload mechanism for this application. So to build annotation make sure that you have 2 components:
+There is no image upload mechanism for this application. 
+
+So to build annotation make sure that you have 2 components:
 
  - In `/static/img` placed images
  - `data.json` in project root
@@ -58,6 +65,7 @@ IMPORTANT please choose file names without spaces or special characters, the bes
 `file_name.extenstion`
 
 For example: `image.png`, `pucture.jpg`, `some_name_of_file.jpeg` .
+
 
 
 ### Supported file types
