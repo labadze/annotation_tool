@@ -1,5 +1,10 @@
 # Annotation Tool V 0.0.1
 
+Important to get working version visit (Releases)[https://github.com/labadze/annotation_tool/releases]
+
+Release ready version in `release` branch not `master` (But in most cases there is same data.
+
+
 This is very simple annotation tool, with minimum 3rd party libraries, based on CANVAS HTML/CSS/JS & Python (Flask).
 
 Supported browsers Firefox, Chrome, Safari
