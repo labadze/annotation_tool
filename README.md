@@ -2,14 +2,14 @@
 
 This is very simple annotation tool, with minimum 3rd party libraries, based on CANVAS HTML/CSS/JS & Python (Flask).
 
+Supported browsers Firefox, Chrome, Safari
+
 
 To generate image list place your images to `static/img` it's much better to keep unix type file names (snake_case without special symbols).
 
 Right now `.PNG`, `JPG`, `JPEG` formats are supported.
 
 Make sure that `data.json` exists in the project root.
-
-You can view detailed video presentation (here)[https://youtu.be/XdZvH-sYCs0] .
 
 More documentation is presented in (Wiki)[https://github.com/labadze/annotation_tool/wiki] .
 
@@ -64,8 +64,11 @@ All images supported by browsers can be used, now it's tested with file types: `
 
 Issue must have following format:
 
- - OS (Windows, Linux, Mac) please
-
+ - OS (Windows, Linux, Mac) please provide version
+ - Python version
+ - Browser 
+ - Detailed explanation of issue (How should be and how it is now)
+ - Screenshot OR / AND Video 
 
 
 ## Folder stricture
