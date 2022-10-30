@@ -20,7 +20,7 @@ More documentation is presented in [Wiki](https://github.com/labadze/annotation_
 
 If you have found some issue please write down [Here](https://github.com/labadze/annotation_tool/issues)
 
-NOTE __I'm checking non critical issues every 24 hours every working day (Monday-Friday)__
+NOTE __I'm checking non critical issues every 24 hours every working day (Monday-Friday)__ _Fixing soon as possible_
 
 
 
@@ -74,6 +74,11 @@ Issue must have following format:
  - Browser 
  - Detailed explanation of issue (How should be and how it is now)
  - Screenshot OR / AND Video 
+
+
+## Contribution
+
+Not planning but will happy.
 
 
 ## Folder stricture
