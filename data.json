@@ -1,218 +1,119 @@
 [
     {
-        "id": 1666944855514,
-        "img_path": "Peter_Gric_(28).jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation2",
-                "styles": "translate(' + 522 + 'px,' + 264 + 'px)",
-                "x": 522,
-                "y": 264,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 2"
-            },
-            {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 520 + 'px,' + 16 + 'px)",
-                "x": 520,
-                "y": 16,
-                "dx": -2,
-                "dy": 0,
-                "width": 190.1999969482422,
-                "height": 70,
-                "annotation_text": "Annotation Text 1"
-            },
-            {
-                "annotation_id": "annotation0",
-                "styles": "translate(' + 393 + 'px,' + 193 + 'px)",
-                "x": 393,
-                "y": 193,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 0"
-            }
-        ]
-    },
-    {
-        "id": 1666944286669,
-        "img_path": "Peter_Gric_Tutt'Art@_(18).jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 572 + 'px,' + 85 + 'px)",
-                "x": 572,
-                "y": 85,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 1"
-            }
-        ]
-    },
-    {
-        "id": 1666944276989,
-        "img_path": "Peter_Gric_Tutt'Art@_(18).jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 572 + 'px,' + 85 + 'px)",
-                "x": 572,
-                "y": 85,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 1"
-            },
-            {
-                "annotation_id": "annotation2",
-                "styles": "translate(' + 0 + 'px,' + -270 + 'px)",
-                "x": 0,
-                "y": -270,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 2"
-            }
-        ]
-    },
-    {
-        "id": 1666944235966,
-        "img_path": "img1.jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation0",
-                "styles": "translate(' + 423 + 'px,' + 130 + 'px)",
-                "x": 423,
-                "y": 130,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 0"
-            },
-            {
-                "annotation_id": "annotation2",
-                "styles": "translate(' + 845 + 'px,' + 59 + 'px)",
-                "x": 845,
-                "y": 59,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 2"
-            },
-            {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 411 + 'px,' + 237 + 'px)",
-                "x": 411,
-                "y": 237,
-                "dx": 0,
-                "dy": 2,
-                "width": 159.1999969482422,
-                "height": 95,
-                "annotation_text": "Annotation Text 1"
-            }
-        ]
-    },
-    {
-        "id": 1666942341190,
-        "img_path": "Peter_Gric_Tutt'Art@(19).jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation2",
-                "annotation_text": "Annotation Text 2",
-                "dx": 0,
-                "dy": 0,
-                "styles": "translate(' + 410 + 'px,' + 147 + 'px)",
-                "x": 410,
-                "y": 147
-            },
-            {
-                "annotation_id": "annotation1",
-                "annotation_text": "Annotation Text 1",
-                "dx": 0,
-                "dy": 0,
-                "styles": "translate(' + 452 + 'px,' + 78 + 'px)",
-                "x": 452,
-                "y": 78
-            }
-        ]
-    },
-    {
-        "id": 1666942334212,
-        "img_path": "Peter_Gric_Tutt'Art@(19).jpg",
-        "annotations": [
-            {
-                "annotation_id": "annotation2",
-                "styles": "translate(' + 417 + 'px,' + 76.33334350585938 + 'px)",
-                "x": 417,
-                "y": 76.33334350585938,
-                "dx": 2,
-                "dy": 1,
-                "width": 218.1999969482422,
-                "height": 111,
-                "annotation_text": "Annotation Text 2"
-            },
-            {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 677 + 'px,' + 74 + 'px)",
-                "x": 677,
-                "y": 74,
-                "dx": 6,
-                "dy": 4,
-                "width": 228.1999969482422,
-                "height": 134,
-                "annotation_text": "Annotation Text 1"
-            }
-        ]
-    },
-    {
-        "id": 1666942140836,
-        "img_path": "img13.png",
-        "annotations": [
-            {
-                "annotation_id": "annotation2",
-                "styles": "translate(' + 425 + 'px,' + 219 + 'px)",
-                "x": 425,
-                "y": 219,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 2"
-            },
-            {
-                "annotation_id": "annotation0",
-                "styles": "translate(' + 736 + 'px,' + 187 + 'px)",
-                "x": 736,
-                "y": 187,
-                "dx": 0,
-                "dy": 0,
-                "annotation_text": "Annotation Text 0"
-            }
-        ]
-    },
-    {
-        "id": 1666941649938,
+        "id": 1667080811344,
         "img_path": "gric-peter.jpg",
         "annotations": [
             {
-                "annotation_id": "annotation2",
-                "annotation_text": "Annotation Text 2",
-                "dx": 0,
-                "dy": 0,
-                "styles": "translate(' + 351 + 'px,' + -4.666656494140625 + 'px)",
-                "x": 351,
-                "y": -4.666656494140625
+                "id": "1667080810320",
+                "x1": 55,
+                "y1": 77,
+                "x2": 122,
+                "y2": 127,
+                "lineWidth": 1,
+                "color": "green",
+                "annotationText": "Annotation Text 1"
             }
         ]
     },
     {
-        "id": 1666941447306,
-        "img_path": "images.jpeg",
+        "id": 1667080790270,
+        "img_path": "Peter_Gric_(28).jpg",
         "annotations": [
             {
-                "annotation_id": "annotation1",
-                "styles": "translate(' + 433 + 'px,' + 25 + 'px)",
-                "x": 433,
-                "y": 25,
-                "dx": 0,
-                "dy": 2,
-                "width": 159.1999969482422,
-                "height": 117.83334350585938,
-                "annotation_text": "Annotation Text 1"
+                "id": "1667080786295",
+                "x1": 96,
+                "y1": 107,
+                "x2": 293,
+                "y2": 191,
+                "lineWidth": 1,
+                "color": "green",
+                "annotationText": "Annotation Text 1"
+            },
+            {
+                "id": "1667080789046",
+                "x1": 163,
+                "y1": 239,
+                "x2": 332,
+                "y2": 326,
+                "lineWidth": 1,
+                "color": "DeepSkyBlue",
+                "annotationText": "Annotation Text 2"
+            }
+        ]
+    },
+    {
+        "id": 1667080772644,
+        "img_path": "Peter_Gric_Tutt'Art@(19).jpg",
+        "annotations": [
+            {
+                "id": "1667080724234",
+                "x1": 133,
+                "y1": 66,
+                "x2": 366,
+                "y2": 217,
+                "lineWidth": 1,
+                "color": "red",
+                "annotationText": "Annotation Text 0"
+            },
+            {
+                "id": "1667080727522",
+                "x1": 493,
+                "y1": 66,
+                "x2": 640,
+                "y2": 159,
+                "lineWidth": 1,
+                "color": "red",
+                "annotationText": "Annotation Text 0"
+            },
+            {
+                "id": "1667080736292",
+                "x1": 1024,
+                "y1": 133,
+                "x2": 1135,
+                "y2": 258,
+                "lineWidth": 1,
+                "color": "red",
+                "annotationText": "Annotation Text 0"
+            },
+            {
+                "id": "1667080739756",
+                "x1": 156,
+                "y1": 325,
+                "x2": 402,
+                "y2": 447,
+                "lineWidth": 1,
+                "color": "green",
+                "annotationText": "Annotation Text 1"
+            },
+            {
+                "id": "1667080741503",
+                "x1": 511,
+                "y1": 357,
+                "x2": 715,
+                "y2": 448,
+                "lineWidth": 1,
+                "color": "green",
+                "annotationText": "Annotation Text 1"
+            },
+            {
+                "id": "1667080766239",
+                "x1": 278,
+                "y1": 566,
+                "x2": 571,
+                "y2": 701,
+                "lineWidth": 1,
+                "color": "DeepSkyBlue",
+                "annotationText": "Annotation Text 2"
+            },
+            {
+                "id": "1667080768312",
+                "x1": 747,
+                "y1": 581,
+                "x2": 903,
+                "y2": 669,
+                "lineWidth": 1,
+                "color": "DeepSkyBlue",
+                "annotationText": "Annotation Text 2"
             }
         ]
     }
