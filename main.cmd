@@ -1,8 +1,8 @@
-ECHO Activating virtual environment
+ECHO Activating virtual environment and Starting application
+ECHO ===============================
 
-.\venv\Scripts\activate
+CALL .\venv\Scripts\activate.bat & python app.py
 
-SET APP_URL=http://127.0.0.1:5000
 
-python app.py
+PAUSE
 

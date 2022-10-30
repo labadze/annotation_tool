@@ -39,7 +39,7 @@ def get_dir_files():
                 entry = next((x for x in items if str(x["img_path"]) == str(filename)), None)
                 item_json_obj = {
                     "file_path": '{server_url}/static/img/{filename}'.format(filename=filename,
-                                                                             server_url=os.getenv('APP_URL')),
+                                                                             server_url='http://127.0.0.1:5000'),
                     "file_name": filename,
                     "data_available": entry is not None and len(entry["annotations"]) > 0
                 }
