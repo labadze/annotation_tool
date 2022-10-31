@@ -251,6 +251,8 @@
             redraw();
         }
     }
+
+    // Detect hover
     document.getElementById("canvas").addEventListener("mousemove", (event) => {
         const canvas = document.getElementById("canvas");
         const context = canvas.getContext("2d");
@@ -267,9 +269,10 @@
                 context.lineWidth = 1;
                 context.fillStyle = 'white';
                 context.strokeStyle = box.color;
-                context.rect(box.x2, box.y1 - 20, 20, 20);
+                // context.rect(box.x2, box.y1 - 20, 20, 20);
+                context.rect(box.x2 - 20, box.y1 + 20, 20, 20);
                 // context.stroke();
-                context.fillText('X', box.x2 + 5, (box.y1 - 5));
+                context.fillText('X', box.x2 - 15, (box.y1 + 15));
                 context.closePath();
                 if (prevRect.x === null && prevRect.y === null && prevRect.w === null && prevRect.h === null) {
                     prevRect.x = box.x2;
@@ -291,6 +294,8 @@
             context.closePath();
         }
     });
+
+    // Remove frame
     document.getElementById("canvas").addEventListener("click", (event) => {
         const canvas = document.getElementById("canvas");
         const context = canvas.getContext("2d");
@@ -300,7 +305,7 @@
         let y = event.clientY - rect.top;
         for (const box of boxes) {
             context.beginPath();
-            context.rect(box.x2, box.y1 - 20, 20, 20);
+            context.rect(box.x2 - 20, box.y1, 20, 20);
             if (context.isPointInPath(x, y)) {
                 context.beginPath();
                 context.clearRect(box.x1, box.y1, box.x2 - box.x1, box.y2 - box.y1);
